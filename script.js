@@ -27,10 +27,12 @@ function generateQuestion() {
   container.innerHTML = "";
   for (let i = 0; i < currentCount; i++) {
     let img = document.createElement("img");
-    img.src = "rabbit.png"; // letakkan gambar arnab sebenar
+    img.src = "rabbit.png"; // letakkan gambar arnab sebenar dalam folder projek
     img.className = "rabbit";
     container.appendChild(img);
   }
+  document.getElementById("answer").value = "";
+  document.getElementById("message").innerText = "";
 }
 
 function startTimer() {
@@ -49,7 +51,7 @@ function startTimer() {
 function checkAnswer() {
   let ans = parseInt(document.getElementById("answer").value);
   if (ans === currentCount) {
-    alert("Betul! Hebat!");
+    document.getElementById("message").innerText = "✅ Betul! Hebat!";
     score += 10;
     document.getElementById("score").innerText = score;
     correctStreak++;
@@ -59,7 +61,7 @@ function checkAnswer() {
     generateQuestion();
     startTimer();
   } else {
-    alert("Salah! Cuba Lagi.");
+    document.getElementById("message").innerText = "❌ Salah! Cuba Lagi.";
     loseLife();
   }
 }
@@ -83,12 +85,12 @@ function levelUp() {
     score += 50;
     document.getElementById("score").innerText = score;
     document.getElementById("level").innerText = level;
-    alert("Tahniah! Anda naik ke Level " + level);
+    document.getElementById("message").innerText = "🎉 Tahniah! Anda naik ke Level " + level;
   }
 }
 
 function gameOver() {
-  alert("Permainan Tamat! Skor akhir: " + score);
+  document.getElementById("message").innerText = "Permainan Tamat! Skor akhir: " + score;
   saveScore(currentPlayer, score);
 }
 
