@@ -25,15 +25,21 @@ function generateQuestion() {
   currentCount = Math.floor(Math.random() * maxRabbits) + 1;
   let container = document.getElementById("question");
   container.innerHTML = "";
+
+  // Paparkan emoji arnab 🐇 sebanyak currentCount
   for (let i = 0; i < currentCount; i++) {
-    let img = document.createElement("img");
-    img.src = "rabbit.png"; // letakkan gambar arnab sebenar dalam folder projek
-    img.className = "rabbit";
-    container.appendChild(img);
+    let span = document.createElement("span");
+    span.textContent = "🐇";
+    span.style.fontSize = "32px";
+    span.style.margin = "5px";
+    container.appendChild(span);
   }
+
+  // Kosongkan jawapan & mesej
   document.getElementById("answer").value = "";
   document.getElementById("message").innerText = "";
 }
+
 
 function startTimer() {
   time = 20;
