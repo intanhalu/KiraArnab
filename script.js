@@ -124,4 +124,8 @@ function launchConfetti() {
   });
 }
 
+function logout() {
+  localStorage.removeItem("currentPlayer"); // buang nama pemain
+  window.location.href = "index.html"; // kembali ke login/register
+}
 window.onload = startGame;
