@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Arnab Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Login / Daftar</h2>
+  <form id="loginForm" onsubmit="savePlayer(event)">
+    <input type="text" id="username" placeholder="Nama pengguna" required>
+    <input type="password" id="password" placeholder="Kata laluan" required>
+    <button type="submit">Log Masuk</button>
+  </form>
+  <button onclick="window.location.href='game.html'">Mula Permainan</button>
+
+  <script>
+    function savePlayer(event) {
+      event.preventDefault();
+      let name = document.getElementById("username").value;
+      localStorage.setItem("currentPlayer", name);
+      alert("Selamat datang, " + name + "!");
+    }
+  </script>
+</body>
+</html>
