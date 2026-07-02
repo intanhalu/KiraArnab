@@ -15,6 +15,12 @@ body {
   margin-top: 10px;
 }
 
+#question {
+  margin: 20px;
+  font-size: 32px;
+}
+
+
 table {
   margin: 20px auto;
   border-collapse: collapse;
