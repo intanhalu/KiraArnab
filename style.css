@@ -1,0 +1,27 @@
+body {
+  font-family: poppins, sans-serif;
+  text-align: center;
+  background: #f0f8ff;
+}
+
+.rabbit {
+  width: 50px;
+  margin: 5px;
+}
+
+#message {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 60%;
+}
+
+th, td {
+  border: 1px solid #333;
+  padding: 8px;
+}
