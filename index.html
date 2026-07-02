@@ -1,56 +1,435 @@
 <!DOCTYPE html>
-<html>
+<html lang="ms">
 <head>
-  <title>Arnab Game - Register & Login</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permainan Mengira Arnab - Pro Edition</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            user-select: none;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Bekas Utama */
+        .main-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Antaramuka Utama (Bingkai Merah Jambu) */
+        .game-container {
+            width: 320px;
+            background-color: #ffdde2;
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* Kad Putih Dalaman */
+        .game-card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid #ffb6c1;
+            position: relative;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            color: #2ec4b6;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .lives {
+            color: #ff4757;
+            font-size: 16px;
+        }
+
+        .timer-bar {
+            width: 100%;
+            background-color: #f1f2f6;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .timer-progress {
+            width: 100%;
+            height: 100%;
+            background-color: #ff4757;
+            transition: width 1s linear;
+        }
+
+        .arnab-section {
+            font-size: 50px;
+            margin: 5px 0;
+        }
+
+        .bubble-text {
+            color: #011627;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background-color: #f1f2f6;
+            padding: 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        /* Grid untuk Sayur-sayuran */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            min-height: 100px;
+        }
+
+        .item {
+            font-size: 32px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 8px;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .item:hover {
+            transform: scale(1.1);
+        }
+
+        .item.selected {
+            background-color: #ff9f43;
+            box-shadow: 0 0 5px rgba(255, 159, 67, 0.5);
+        }
+
+        /* Butang Beri Makan */
+        .btn-feed {
+            background-color: #2ec4b6;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 0;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(46, 196, 182, 0.3);
+        }
+
+        .btn-feed:disabled {
+            background-color: #b2bec3;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Bahagian Teks Bawah */
+        .instruction-section {
+            margin-top: 15px;
+            color: #1e3799;
+        }
+
+        .instruction-title {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .instruction-desc {
+            font-size: 12px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* Papan Pendahulu (Leaderboard) */
+        .leaderboard-container {
+            width: 320px;
+            background-color: #ffffff;
+            border-radius: 30px;
+            padding: 20px;
+            border: 3px solid #2ec4b6;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .leaderboard-title {
+            color: #2ec4b6;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #f1f2f6;
+            font-size: 14px;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            font-weight: bold;
+            color: #ff9f43;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-  <h2>Daftar Pengguna Baru</h2>
-  <form id="registerForm" onsubmit="registerUser(event)">
-    <input type="text" id="regUsername" placeholder="Nama pengguna" required>
-    <input type="password" id="regPassword" placeholder="Kata laluan" required>
-    <button type="submit">Daftar</button>
-  </form>
 
-  <h2>Login</h2>
-  <form id="loginForm" onsubmit="loginUser(event)">
-    <input type="text" id="loginUsername" placeholder="Nama pengguna" required>
-    <input type="password" id="loginPassword" placeholder="Kata laluan" required>
-    <button type="submit">Log Masuk</button>
-  </form>
+<div class="main-wrapper">
+    <!-- BLOK PERMAINAN -->
+    <div class="game-container">
+        <div class="game-card">
+            <div class="header-info">
+                <span id="level-display">Level 1</span>
+                <span id="timer-text" style="color: #ff4757;">20s</span>
+                <span class="lives" id="lives-display">❤️❤️❤️</span>
+            </div>
 
-  <script>
-    // Simpan pengguna dalam localStorage
-    function registerUser(event) {
-      event.preventDefault();
-      let username = document.getElementById("regUsername").value;
-      let password = document.getElementById("regPassword").value;
+            <div class="timer-bar">
+                <div class="timer-progress" id="timer-progress"></div>
+            </div>
 
-      // Simpan data pengguna
-      let users = JSON.parse(localStorage.getItem("users")) || {};
-      if (users[username]) {
-        alert("Nama pengguna sudah wujud. Sila pilih nama lain.");
-      } else {
-        users[username] = password;
-        localStorage.setItem("users", JSON.stringify(users));
-        alert("Pendaftaran berjaya! Sila log masuk.");
-      }
+            <div class="arnab-section" id="arnab">🐰</div>
+            <div class="bubble-text" id="target-text">🥕 Saya nak ...</div>
+
+            <div class="item-grid" id="grid"></div>
+
+            <button class="btn-feed" id="feed-button" onclick="checkAnswer()">Beri Makan</button>
+        </div>
+
+        <div class="instruction-section">
+            <div class="instruction-title">MENGHITUNG CARROT</div>
+            <p class="instruction-desc">Bantu arnab kira lobak sebelum masa tamat!</p>
+        </div>
+    </div>
+
+    <!-- BLOK LEADERSHIP BOARD -->
+    <div class="leaderboard-container">
+        <h3 class="leaderboard-title">🏆 Papan Pendahulu</h3>
+        <ul class="leaderboard-list" id="leaderboard-list">
+            <!-- Data dimasukkan oleh JS -->
+        </ul>
+    </div>
+</div>
+
+<script>
+    let currentLevel = 1;
+    let targetCarrots = 0;
+    let lives = 3;
+    let timeLeft = 20;
+    let timerInterval = null;
+    let gameActive = true;
+
+    // Fungsi mulakan tahap baru
+    function generateLevel() {
+        if (!gameActive) return;
+
+        // Reset Pemasa
+        clearInterval(timerInterval);
+        timeLeft = 20;
+        updateTimerBar();
+
+        document.getElementById('level-display').innerText = `Level ${currentLevel}`;
+        document.getElementById('arnab').innerText = "🐰";
+        document.getElementById('feed-button').disabled = false;
+
+        // Jana item rawak
+        const totalSlots = 10;
+        const totalCarrotsAvailable = Math.floor(Math.random() * 5) + 2; 
+        const totalCornsAvailable = totalSlots - totalCarrotsAvailable;
+
+        targetCarrots = Math.floor(Math.random() * totalCarrotsAvailable) + 1;
+        document.getElementById('target-text').innerText = `🥕 Saya nak ${targetCarrots} carrot!`;
+
+        let itemsArray = [];
+        for (let i = 0; i < totalCarrotsAvailable; i++) itemsArray.push({ type: 'carrot', icon: '🥕' });
+        for (let i = 0; i < totalCornsAvailable; i++) itemsArray.push({ type: 'corn', icon: '🌽' });
+
+        itemsArray.sort(() => Math.random() - 0.5);
+
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+
+        itemsArray.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.setAttribute('data-type', item.type);
+            div.innerText = item.icon;
+            div.onclick = function() { if(gameActive) toggleItem(this); };
+            grid.appendChild(div);
+        });
+
+        // Mulakan kiraan pemasa semula
+        startTimer();
     }
 
-    function loginUser(event) {
-      event.preventDefault();
-      let username = document.getElementById("loginUsername").value;
-      let password = document.getElementById("loginPassword").value;
-
-      let users = JSON.parse(localStorage.getItem("users")) || {};
-      if (users[username] && users[username] === password) {
-        localStorage.setItem("currentPlayer", username);
-        alert("Selamat datang, " + username + "!");
-        window.location.href = "game.html"; // pergi ke game page
-      } else {
-        alert("Login gagal. Sila daftar dahulu atau semak kata laluan.");
-      }
+    function toggleItem(element) {
+        element.classList.toggle('selected');
     }
-  </script>
-</body>
-</html>
+
+    // Logik Fungsi Pemasa
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerBar();
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('arnab').innerText = "⏰";
+                deductLife("Masa tamat! ⏰");
+            }
+        }, 1000);
+    }
+
+    function updateTimerBar() {
+        document.getElementById('timer-text').innerText = `${timeLeft}s`;
+        const percentage = (timeLeft / 20) * 100;
+        document.getElementById('timer-progress').style.width = `${percentage}%`;
+    }
+
+    // Menguruskan kehilangan nyawa
+    function deductLife(reasonMessage) {
+        lives--;
+        updateLivesDisplay();
+
+        if (lives <= 0) {
+            gameOver();
+        } else {
+            alert(`${reasonMessage}\nNyawa berkurang! Baki nyawa: ${lives}`);
+            generateLevel();
+        }
+    }
+
+    function updateLivesDisplay() {
+        let heartString = "";
+        for(let i=0; i<3; i++) {
+            heartString += (i < lives) ? "❤️" : "🖤";
+        }
+        document.getElementById('lives-display').innerText = heartString;
+    }
+
+    // Fungsi semak jawapan
+    function checkAnswer() {
+        if (!gameActive) return;
+        clearInterval(timerInterval);
+
+        const selectedItems = document.querySelectorAll('.item.selected');
+        let carrotCount = 0;
+        let wrongItemSelect = false;
+
+        selectedItems.forEach(item => {
+            if (item.getAttribute('data-type') === 'carrot') {
+                carrotCount++;
+            } else {
+                wrongItemSelect = true;
+            }
+        });
+
+ if (wrongItemSelect) {
+            document.getElementById('arnab').innerText = "🤢";
+            setTimeout(() => { deductLife("Alamak! Tersalah pilih jagung. 🌽❌"); }, 100);
+        } else if (carrotCount === targetCarrots) {
+            document.getElementById('arnab').innerText = "🥳";
+            setTimeout(() => {
+                alert("Tahniah! 🎉 Sedia untuk Level seterusnya!");
+                currentLevel++;
+                generateLevel();
+            }, 100);
+        } else {
+            document.getElementById('arnab').innerText = "😢";
+            setTimeout(() => { deductLife(`Salah bilangan! Arnab mahukan ${targetCarrots}.`); }, 100);
+        }
+    }
+
+    // Tamat Permainan & Simpan Rekod Skor
+    function gameOver() {
+        gameActive = false;
+        clearInterval(timerInterval);
+        document.getElementById('feed-button').disabled = true;
+        document.getElementById('arnab').innerText = "🪦";
+        
+        const finalScore = currentLevel - 1;
+        alert(`GAME OVER! 😭\nAnda berjaya melepasi ${finalScore} tahap.`);
+
+        const playerName = prompt("Masukkan nama anda untuk papan pendahulu:") || "Pemain Misteri";
+        saveLeaderboard(playerName, finalScore);
+        displayLeaderboard();
+
+        // Butang main semula
+        if (confirm("Mahu main semula?")) {
+            currentLevel = 1;
+            lives = 3;
+            gameActive = true;
+            updateLivesDisplay();
+            generateLevel();
+        }
+    }
+
+    // Menguruskan simpanan LocalStorage untuk Leaderboard
+    function saveLeaderboard(name, score) {
+        let scores = JSON.parse(localStorage.getItem('rabbit_scores')) || [];
+        scores.push({ name: name, score: score, date: new Date().toLocaleDateString() });
+        
+        // Susun skor dari paling tinggi ke rendah, hadkan top 5 sahaja
+        scores.sort((a, b) => b.score - a.score);
+        scores = scores.slice(0, 5);
+        
+        localStorage.setItem('rabbit_scores', JSON.stringify(scores));
+    }
+
+    function displayLeaderboard() {
+        const scores = JSON.parse(localStorage.getItem('rabbit_scores')) || [];
+        const listContainer = document.getElementById('leaderboard-list');
+        listContainer.innerHTML = '';
+
+        if (scores.length === 0) {
+            listContainer.innerHTML = '<li style="text-align:center; color:#b2bec3; padding:10px;">Tiada rekod lagi</li>';
+            return;
+        }
+
+        scores.forEach((entry, index) => {
+            const li = document.createElement('li');
+            li.className = 'leaderboard-item';
+            li.innerHTML = `
+                <div><span class="rank">#${index + 1}</span>${entry.name}</div>
+                <strong>Lv. ${entry.score}</strong>
+            `;
+            listContainer.appendChild(li);
+        });
+    }
+
+    // Jalankan komponen permulaan semasa skrip dimuatkan
+    displayLeaderboard();
+    generateLevel();
+</script>
